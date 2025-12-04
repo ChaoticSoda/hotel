@@ -77,31 +77,32 @@ public class CidadeService {
     }
 
     @Transactional
-    public Cidade salvar(CidadeDTO cidadeDTO) {
+    public CidadeDTO salvar(CidadeDTO cidadeDTO) {
     Estado estado = estadoRepository.findById(cidadeDTO.estadoID())
             .orElseThrow(() -> new RuntimeException("Estado não encontrado com o ID: " + cidadeDTO.estadoID()));
 
-    Cidade cidade = new Cidade();
+    Cidade cidade = fromDTO(cidadeDTO);
     cidade.setNome(cidadeDTO.nome());
     cidade.setEstado(estado);
+    Cidade cidadeSalva = cidadeRepository.save(cidade);
 
-    return cidadeRepository.save(cidade);
+    return toDTO(cidadeSalva);
 }
 
     @Transactional
-    public Cidade atualizar(Long id, CidadeDTO cidadeDTO){
-        Cidade cidade = cidadeRepository.findById(id)
+    public Cidade atualizar(Long id, Cidade cidade){
+        Cidade cidadeAtual = cidadeRepository.findById(id)
             .orElseThrow(() -> new RecursoNaoEncontradoException("Cidade não encontrada com ID: " + id));
 
-        cidade.setNome(cidadeDTO.nome());
+        cidadeAtual.setNome(cidade.getNome());
 
-        if (!cidade.getEstado().getIdEstado().equals(cidadeDTO.estadoID())){
-            Estado estado = estadoRepository.findById(cidadeDTO.estadoID())
-                .orElseThrow(() -> new RecursoNaoEncontradoException("Estado não encontrado com ID: " + cidadeDTO.estadoID()));
-            cidade.setEstado(estado);
+        if (!cidadeAtual.getEstado().getIdEstado().equals(cidade.getEstado().getIdEstado())){
+            Estado estado = estadoRepository.findById(cidade.getEstado().getIdEstado())
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Estado não encontrado com ID: " + cidade.getEstado().getIdEstado()));
+            cidadeAtual.setEstado(estado);
         }
 
-        return cidadeRepository.save(cidade);
+        return cidadeRepository.save(cidadeAtual);
     }
 
 }
