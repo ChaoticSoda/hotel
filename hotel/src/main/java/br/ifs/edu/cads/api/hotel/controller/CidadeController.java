@@ -34,10 +34,11 @@ public class CidadeController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<Cidade>> listarTodos(){
-        List<Cidade> cidades = cidadeService.listarTodos();
+    public ResponseEntity<List<CidadeDTO>> listarTodos() {
+        List<CidadeDTO> cidades = cidadeService.listarTodos();
         return ResponseEntity.ok(cidades);
     }
+
 
     @PostMapping
     public ResponseEntity<CidadeDTO> criar(@Valid @RequestBody CidadeDTO cidadeDTO){

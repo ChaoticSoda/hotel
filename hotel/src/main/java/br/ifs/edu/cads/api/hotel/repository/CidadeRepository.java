@@ -12,7 +12,7 @@ public interface CidadeRepository extends JpaRepository<Cidade, Long> {
 
     boolean existsByNome(String nome);
 
-    List<Cidade> findAllbyNome(String nome);
+    List<Cidade> findAllByNome(String nome);
 
-    List<Cidade> findAllbyEstado(Estado estado);
+    List<Cidade> findAllByEstado(Estado estado);
 }

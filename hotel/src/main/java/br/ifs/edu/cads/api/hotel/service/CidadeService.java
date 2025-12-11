@@ -52,16 +52,21 @@ public class CidadeService {
         return cidadeDTO;
     }
 
-    public List<Cidade> listarTodos(){
-        return cidadeRepository.findAll();
+    public List<CidadeDTO> listarTodos() {
+        return cidadeRepository.findAll()
+        .stream()
+        .map(this::toDTO)
+        .toList();
     }
 
+
+
     public List<Cidade> listarTodosNome(String nome){
-        return cidadeRepository.findAllbyNome(nome);
+        return cidadeRepository.findAllByNome(nome);
     }
 
     public List<Cidade> listarTodosEstado(Estado estado){
-        return cidadeRepository.findAllbyEstado(estado);
+        return cidadeRepository.findAllByEstado(estado);
     }
 
     private Cidade fromDTO(CidadeDTO cidadeDTO){
